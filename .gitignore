@@ -1,0 +1,31 @@
+# .gitignore
+
+# Python files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Flask files
+instance/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# SQLite database file
+*.sqlite
+
+# Logs
+*.log
+logs
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints

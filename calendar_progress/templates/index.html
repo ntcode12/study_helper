@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: azure;">Study Tracker</h1>
+        <h2 style="color: azure;">Did you study today?</h2>
+        <form method="post" id="studyForm">
+            <input type="hidden" name="studied" value="true">
+            <button type="submit" style="margin: auto;"><strong>Yes, I did!</strong></button>
+        </form>
+        <h2 style="color: azure;">Your Study Calendar</h2>
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <div style="width: 600px;">
+                <div class="calendar current-month">
+                    <h3>{{ current_month.name }}</h3>
+                    <table>
+                        <tr>
+                            <th>Mon</th>
+                            <th>Tue</th>
+                            <th>Wed</th>
+                            <th>Thu</th>
+                            <th>Fri</th>
+                            <th>Sat</th>
+                            <th>Sun</th>
+                        </tr>
+                        {% for week in current_month.weeks %}
+                        <tr>
+                            {% for day in week %}
+                            <td class="{{ 'studied' if day and day.studied else '' }}">
+                                {{ day.day if day else '' }}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="calendar-container">
+            {% for month in months %}
+            <div class="calendar">
+                <h3>{{ month.name }}</h3>
+                <table>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                    {% for week in month.weeks %}
+                    <tr>
+                        {% for day in week %}
+                        <td class="{{ 'studied' if day and day.studied else '' }}">
+                            {{ day.day if day else '' }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("studyForm");
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the form from auto-submitting
+                var formData = new FormData(this);
+        
+                fetch("/", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'studied': formData.get('studied')
+                    }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    console.log("Success:", html);
+                    // For debugging, log the HTML or take a more targeted approach to updating the page
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+          
+</body>
+</html>

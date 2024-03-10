@@ -8,6 +8,7 @@ Study Helper is a web application that helps you keep track of your study habits
 - View your study history in a monthly calendar format
 - The calendar updates dynamically when you mark a day as studied
 
+![Alt text](images/webapp_preview.png)
 ## Installation
 
 1. Clone this repository:
